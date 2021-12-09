@@ -1,6 +1,7 @@
 const express = require("express");
 const routerApi = require("./routes/");
 const cors = require("cors");
+const path = require("path");
 const { dbConnection } = require("./db/config");
 require("dotenv").config();
 
@@ -11,7 +12,7 @@ const app = express();
 dbConnection();
 
 // PUBLIC DIR
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 // CORS
 app.use(cors());
@@ -21,6 +22,12 @@ app.use(express.json());
 
 // ROUTES
 routerApi(app);
+
+// HANDLE ROUTES
+app.use("*", (req,res)=>{
+    res.sendFile(path.resolve(__dirname, "public/index.html"));
+})
+
 
 // PORTS
 const port = process.env.PORT;
